@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
+
+
+
+  xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+  xsi:schemaLocation="
+  UnityEngine.UIElements ../../../UIElementsSchema/UnityEngine.UIElements.xsd
+  UnityEditor.UIElements ../../../UIElementsSchema/UnityEditor.UIElements.xsd
+  UnityEditor.PackageManager.UI ../../../UIElementsSchema/UnityEditor.PackageManager.UI.xsd
+  "
+  >
+
+  <uie:ObjectField label="Level" name="mapObjectField"/>
+  <uie:ObjectField label="Texture File" name="textureField" binding-path="Texture"/>
+  <TextField label="Level Name:" text="" binding-path="Name" name="mapNameField"/>
+  
+  <VisualElement class="menu-row">
+    
+    <VisualElement class="menu-column">
+      <IMGUIContainer name ="mapGridContainer" class="map-grid"/>
+    </VisualElement>
+
+    <VisualElement class="menu-column">
+      <IMGUIContainer name ="palletteGridContainer" class="map-grid"/>
+    </VisualElement>
+    
+  </VisualElement>
+  <VisualElement class="button-row">
+    <Button name="saveButton" text="Save" class="wide-button"/>
+    <Button name="colliderButton" text="Add Collider" class="wide-button"/>
+    
+    <VisualElement class="menu-column">
+      <TextElement text="Layers:"/>
+      <ListView label="Current Layer" name="layerList" class="layer-view"/>
+    </VisualElement>
+    
+  </VisualElement>
+</UXML>

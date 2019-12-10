@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
+
+
+
+  xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+  xsi:schemaLocation="
+  UnityEngine.UIElements ../../../UIElementsSchema/UnityEngine.UIElements.xsd
+  UnityEditor.UIElements ../../../UIElementsSchema/UnityEditor.UIElements.xsd
+  UnityEditor.PackageManager.UI ../../../UIElementsSchema/UnityEditor.PackageManager.UI.xsd
+  "
+  >
+
+  <uie:ObjectField label="Player" name="playerObjectField"/>
+  <TextField label="Player Name:" text="" binding-path="Name" name="playerNameLabel"/>
+  <TextField label="Player Damage:" text="" binding-path="Damage" name="playerDamageLabel"/>
+  <TextField label="Player Range:" text="" binding-path="Range" name="playerRangeLabel"/>
+
+  <VisualElement class="menu-row">
+
+    <VisualElement class="menu-column">
+      <Button name="colliderButton" text="Add Collider" class="wide-button"/>
+      <VisualElement class="button-row">
+        <VisualElement class="button-column">
+          <Button name="tile0" class="tile-button"/>
+          <Button name="tile1" class="tile-button"/>
+          <Button name="tile2" class="tile-button"/>
+          <Button name="tile3" class="tile-button"/>
+        </VisualElement>
+
+        <VisualElement class="button-column">
+          <Button name="tile4" class="tile-button"/>
+          <Button name="tile5" class="tile-button"/>
+          <Button name="tile6" class="tile-button"/>
+          <Button name="tile7" class="tile-button"/>
+        </VisualElement>
+
+        <VisualElement class="button-column">
+          <Button name="tile8" class="tile-button"/>
+          <Button name="tile9" class="tile-button"/>
+          <Button name="tile10" class="tile-button"/>
+          <Button name="tile11" class="tile-button"/>
+        </VisualElement>
+      </VisualElement>
+    </VisualElement>
+
+  </VisualElement>
+  <ListView label="List of Enemies" name="playerListView"/>
+  <VisualElement class="button-row">
+    <Button name="saveButton" text="Save" class="wide-button"/>
+  </VisualElement>
+</UXML>

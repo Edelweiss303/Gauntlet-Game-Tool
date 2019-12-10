@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements"
+
+
+
+  xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
+  xsi:schemaLocation="
+  UnityEngine.UIElements ../../../UIElementsSchema/UnityEngine.UIElements.xsd
+  UnityEditor.UIElements ../../../UIElementsSchema/UnityEditor.UIElements.xsd
+  UnityEditor.PackageManager.UI ../../../UIElementsSchema/UnityEditor.PackageManager.UI.xsd
+  "
+  >
+
+  <uie:ObjectField label="Tile Sprite" name="tileSpriteField"/>
+
+  <VisualElement class="menu-row">
+
+    <VisualElement class="menu-column">
+      <IMGUIContainer name ="spriteDisplay" class="sprite-display"/>
+    </VisualElement>
+
+  </VisualElement>
+  <VisualElement class="button-row">
+    <Button name="saveButton" text="Save" class="wide-button"/>
+    <Button name="colliderButton" text="Add Collider" class="wide-button"/>
+  </VisualElement>
+</UXML>

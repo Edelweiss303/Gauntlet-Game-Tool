@@ -1,0 +1,45 @@
+.rootElement {
+    flex-direction: row;
+    margin: 10px;
+}
+
+.menu-row {
+    flex-direction: row
+}
+
+.menu-column {
+    flex-direction: column;
+}
+
+.player-grid {
+    overflow: hidden;
+    flex-direction: row;
+    width: 513px;
+    height: 513px;
+    background-color: rgb(0, 0, 0);
+}
+
+.button-column {
+    flex-direction: column;
+    flex-grow: 1.0;
+}
+
+.button-row {
+    flex-direction: row;
+}
+
+.tile-button {
+    width: 128px;
+    height: 128px;
+    /*background-image: url("Resources/nu.png")*/
+    /* Style rule that aligns items on the horizontal axis. */
+    align-items: flex-start;
+    /* Style rule that aligns items on the vertical axis. */
+    justify-content: center;
+    flex-grow: 1.0;
+}
+
+.wide-button {
+    width: 128px;
+    height: 32px;
+}

@@ -1,0 +1,17 @@
+.main-menu-row{
+    flex-direction: row;
+    flex-grow: 1.0;
+    justify-content: center;
+}
+
+.main-menu-button-on {
+    width: 128px;
+    height: 32px;
+    opacity: 0.4;
+}
+
+.main-menu-button-off {
+    width: 128px;
+    height: 32px;
+    opacity: 1.0;
+}

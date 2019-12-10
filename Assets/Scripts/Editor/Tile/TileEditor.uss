@@ -1,0 +1,45 @@
+.rootElement {
+    flex-direction: row;
+    margin: 10px;
+}
+
+.menu-row {
+    flex-direction: row
+}
+
+.menu-column {
+    flex-direction: column;
+}
+
+.button-column {
+    flex-direction: column;
+    flex-grow: 1.0;
+}
+
+.sprite-display {
+    overflow: hidden;
+    flex-direction: row;
+    width: 128px;
+    height: 128px;
+    background-color: rgb(30, 30, 30);
+}
+
+.button-row {
+    flex-direction: row;
+}
+
+.tile-button {
+    width: 128px;
+    height: 128px;
+    /*background-image: url("Resources/nu.png")*/
+    /* Style rule that aligns items on the horizontal axis. */
+    align-items: flex-start;
+    /* Style rule that aligns items on the vertical axis. */
+    justify-content: center;
+    flex-grow: 1.0;
+}
+
+.wide-button {
+    width: 128px;
+    height: 32px;
+}
