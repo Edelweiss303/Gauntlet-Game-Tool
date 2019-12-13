@@ -64,9 +64,11 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Entity\CircleCollider.cs" />
     <Compile Include="Assets\Scripts\Entity\Map.cs" />
-    <Compile Include="Assets\Scripts\Entity\MapData.cs" />
+    <Compile Include="Assets\Scripts\Entity\Player.cs" />
     <Compile Include="Assets\Scripts\Entity\PolygonCollider.cs" />
+    <Compile Include="Assets\Scripts\Entity\RigidBody.cs" />
     <Compile Include="Assets\Scripts\Entity\Tile.cs" />
+    <Compile Include="Assets\Scripts\Entity\Weapon.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/barnwal/Desktop/Work/Tools and Data-Driven Design/Gauntlet Game Tool/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -628,6 +630,12 @@
     <Reference Include="Boo.Lang">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.14f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{8FA61DFE-35A6-0D3C-3407-D7BF82225B6A}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

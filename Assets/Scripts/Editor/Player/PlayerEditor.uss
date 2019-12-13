@@ -19,6 +19,14 @@
     background-color: rgb(0, 0, 0);
 }
 
+.sprite-display {
+    overflow: hidden;
+    flex-direction: row;
+    width: 128px;
+    height: 128px;
+    background-color: rgb(30, 30, 30);
+}
+
 .button-column {
     flex-direction: column;
     flex-grow: 1.0;

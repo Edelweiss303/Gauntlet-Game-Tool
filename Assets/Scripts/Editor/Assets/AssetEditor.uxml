@@ -11,21 +11,9 @@
   "
   >
 
-  <uie:ObjectField label="Sprite Sheet" name="spriteSheetField"/>
-  <TextField label="Asset Name:" text="" binding-path="Name" name="assetNameLabel"/>
-
-  <VisualElement class="menu-row">
-
-    <VisualElement class="menu-column">
-      <Button name="colliderButton" text="Add Collider" class="wide-button"/>
-      <VisualElement class="button-row">
-       
-      </VisualElement>
-    </VisualElement>
-
-  </VisualElement>
-  <ListView label="List of Enemies" name="playerListView"/>
+  <uie:ObjectField label="Asset" name="assetField"/>
+  <TextField label="File Name:" text="" binding-path="Name" name="fileNameField"/>
   <VisualElement class="button-row">
-    <Button name="saveButton" text="Save" class="wide-button"/>
+    <Button name="exportButton" text="Export" class="wide-button"/>
   </VisualElement>
 </UXML>

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ace0dd55838b1f7479dbe65558bc9d40, type: 3}
   m_Name: Dungeon_64
   m_EditorClassIdentifier: 
-  json: 
   sprite: {fileID: -1198641697305869003, guid: 3ad6392551b53eb429a463dbe3eb7a36, type: 3}
   rect:
     serializedVersion: 2
@@ -20,5 +19,8 @@ MonoBehaviour:
     y: 192
     width: 64
     height: 64
-  transform: {x: 0, y: 0}
+  position: {x: 0, y: 0}
+  scale: {x: 1, y: 1}
   enabled: 1
+  destroyOnUnload: 1
+  layer: 0

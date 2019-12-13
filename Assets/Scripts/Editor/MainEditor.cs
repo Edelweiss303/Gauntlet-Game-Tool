@@ -13,7 +13,7 @@ public sealed class MainEditor : EditorWindow, IBindable
         Level,
         Player,
         Enemy,
-        Tile,
+        Weapon,
         Assets
     }
     static MainEditor _window;
@@ -26,13 +26,13 @@ public sealed class MainEditor : EditorWindow, IBindable
     LevelEditor levelEditor = new LevelEditor();
     PlayerEditor playerEditor = new PlayerEditor();
     EnemyEditor enemyEditor = new EnemyEditor();
-    TileEditor tileEditor = new TileEditor();
+    WeaponEditor weaponEditor = new WeaponEditor();
     AssetEditor assetEditor = new AssetEditor();
 
     Button levelButton;
     Button playerButton;
     Button enemyButton;
-    Button tileButton;
+    Button weaponButton;
     Button assetButton;
 
     [Shortcut("Refresh Gauntlet Editor", KeyCode.F9)]
@@ -73,8 +73,8 @@ public sealed class MainEditor : EditorWindow, IBindable
         enemyButton = mainRootElement.Q<Button>("enemyButton");
         enemyButton.RegisterCallback<MouseUpEvent, EditorType>(MenuCallBack, EditorType.Enemy);
 
-        tileButton = mainRootElement.Q<Button>("tileButton");
-        tileButton.RegisterCallback<MouseUpEvent, EditorType>(MenuCallBack, EditorType.Tile);
+        weaponButton = mainRootElement.Q<Button>("weaponButton");
+        weaponButton.RegisterCallback<MouseUpEvent, EditorType>(MenuCallBack, EditorType.Weapon);
 
         assetButton = mainRootElement.Q<Button>("assetButton");
         assetButton.RegisterCallback<MouseUpEvent, EditorType>(MenuCallBack, EditorType.Assets);
@@ -100,8 +100,8 @@ public sealed class MainEditor : EditorWindow, IBindable
                 enemyButton.RemoveFromClassList("main-menu-button-on");
                 enemyButton.AddToClassList("main-menu-button-off");
 
-                tileButton.RemoveFromClassList("main-menu-button-on");
-                tileButton.AddToClassList("main-menu-button-off");
+                weaponButton.RemoveFromClassList("main-menu-button-on");
+                weaponButton.AddToClassList("main-menu-button-off");
 
                 assetButton.RemoveFromClassList("main-menu-button-on");
                 assetButton.AddToClassList("main-menu-button-off");
@@ -120,8 +120,8 @@ public sealed class MainEditor : EditorWindow, IBindable
                 enemyButton.RemoveFromClassList("main-menu-button-on");
                 enemyButton.AddToClassList("main-menu-button-off");
 
-                tileButton.RemoveFromClassList("main-menu-button-on");
-                tileButton.AddToClassList("main-menu-button-off");
+                weaponButton.RemoveFromClassList("main-menu-button-on");
+                weaponButton.AddToClassList("main-menu-button-off");
 
                 assetButton.RemoveFromClassList("main-menu-button-on");
                 assetButton.AddToClassList("main-menu-button-off");
@@ -140,19 +140,19 @@ public sealed class MainEditor : EditorWindow, IBindable
                 levelButton.RemoveFromClassList("main-menu-button-on");
                 levelButton.AddToClassList("main-menu-button-off");
 
-                tileButton.RemoveFromClassList("main-menu-button-on");
-                tileButton.AddToClassList("main-menu-button-off");
+                weaponButton.RemoveFromClassList("main-menu-button-on");
+                weaponButton.AddToClassList("main-menu-button-off");
 
                 assetButton.RemoveFromClassList("main-menu-button-on");
                 assetButton.AddToClassList("main-menu-button-off");
                 break;
 
-            case EditorType.Tile:
+            case EditorType.Weapon:
                 rootVisualElement.RemoveAt(1);
-                tileEditor.OnOpen(rootVisualElement);
+                weaponEditor.OnOpen(rootVisualElement);
 
-                tileButton.RemoveFromClassList("main-menu-button-off");
-                tileButton.AddToClassList("main-menu-button-on");
+                weaponButton.RemoveFromClassList("main-menu-button-off");
+                weaponButton.AddToClassList("main-menu-button-on");
 
                 assetButton.RemoveFromClassList("main-menu-button-on");
                 assetButton.AddToClassList("main-menu-button-off");
@@ -180,8 +180,8 @@ public sealed class MainEditor : EditorWindow, IBindable
                 enemyButton.RemoveFromClassList("main-menu-button-on");
                 enemyButton.AddToClassList("main-menu-button-off");
 
-                tileButton.RemoveFromClassList("main-menu-button-on");
-                tileButton.AddToClassList("main-menu-button-off");
+                weaponButton.RemoveFromClassList("main-menu-button-on");
+                weaponButton.AddToClassList("main-menu-button-off");
 
                 levelButton.RemoveFromClassList("main-menu-button-on");
                 levelButton.AddToClassList("main-menu-button-off");

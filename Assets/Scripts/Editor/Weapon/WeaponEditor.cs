@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.Collections.Generic;
 
-public class TileEditor
+public class WeaponEditor
 {
     public IBinding binding { get; set; }
     public string bindingPath { get; set; }
@@ -18,10 +18,10 @@ public class TileEditor
 
     public void OnOpen(VisualElement root)
     {
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/Tile/TileEditor.uss");
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/Weapon/WeaponEditor.uss");
         root.styleSheets.Add(styleSheet);
 
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/Editor/Tile/TileEditor.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Scripts/Editor/Weapon/WeaponEditor.uxml");
         tileRootElement = visualTree.CloneTree();
         root.Add(tileRootElement);
 

@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 using System.IO;
 using System.Collections.Generic;
+using SimpleJSON;
 
 
 public class LevelEditor
@@ -17,15 +18,17 @@ public class LevelEditor
     string[] layers = {"Environment", "Props", "Enemies", "Player"};
     int currentLayer;
 
-    int rowCount = 20;
-    int columnCount = 20;
-    int cellSize = 32;
+    int rowCount = 32;
+    int columnCount = 32;
+    int cellSize = 20;
 
-    //2D arrays for each layer
-    List<List<Tile>> cells1;
-    List<List<Tile>> cells2;
-    List<List<Tile>> cells3;
-    List<List<Tile>> cells4;
+    //list of 2D arrays for each layer where
+    // 0 = environment
+    // 1 = props
+    // 2 = enemies
+    // 3 = player
+    List<List<List<Tile>>> mapLayers;
+    bool paintFlag = false;
 
     //Arrays for the paint palette
     int paletteRowCount = 10;
@@ -50,11 +53,11 @@ public class LevelEditor
 
         for (int r = 1; r < rowCount + 1; r++)
         {
-            EditorGUI.DrawRect(new Rect(new Vector2(0, r * cellSize), new Vector2(columnCount * cellSize, 1)), Color.green);
+            EditorGUI.DrawRect(new Rect(new Vector2(0, r * cellSize), new Vector2(columnCount * cellSize, 1)), selectionColor);
         }
         for (int c = 1; c < columnCount + 1; c++)
         {
-            EditorGUI.DrawRect(new Rect(new Vector2(c * cellSize, 0), new Vector2(1, rowCount * cellSize)), Color.green);
+            EditorGUI.DrawRect(new Rect(new Vector2(c * cellSize, 0), new Vector2(1, rowCount * cellSize)), selectionColor);
         }
     }
 
@@ -111,31 +114,29 @@ public class LevelEditor
             }
         }
 
-        cells1 = new List<List<Tile>>(rowCount); //Need to get this from the map;
-        cells2 = new List<List<Tile>>(rowCount); 
-        cells3 = new List<List<Tile>>(rowCount); 
-        cells4 = new List<List<Tile>>(rowCount); 
-        for (int r = 0; r < rowCount; r++)
+        mapLayers = new List<List<List<Tile>>>(layers.Length);
+        for (int i = 0; i < layers.Length; i++)
         {
-            cells1.Add(new List<Tile>(columnCount));
-            cells2.Add(new List<Tile>(columnCount));
-            cells3.Add(new List<Tile>(columnCount));
-            cells4.Add(new List<Tile>(columnCount));
-            for (int c = 0; c < columnCount; c++)
+            mapLayers.Add(new List<List<Tile>>(rowCount));
+            for (int r = 0; r < rowCount; r++)
             {
-                cells1[r].Add(Tile.CreateInstance<Tile>());
-                cells2[r].Add(Tile.CreateInstance<Tile>());
-                cells3[r].Add(Tile.CreateInstance<Tile>());
-                cells4[r].Add(Tile.CreateInstance<Tile>());
+                mapLayers[i].Add(new List<Tile>(columnCount));
+                for (int c = 0; c < columnCount; c++)
+                {
+                    mapLayers[i][r].Add(Tile.CreateInstance<Tile>());
+                    EditorUtility.SetDirty(mapLayers[i][r][c]);
+                }
             }
         }
-
         LoadPalette();
 
         var mapGridContainer = levelRootElement.Q<IMGUIContainer>("mapGridContainer");
         var paletteGridContainer = levelRootElement.Q<IMGUIContainer>("palletteGridContainer");
 
-        mapGridContainer.RegisterCallback<MouseDownEvent>(MapMouseGridCallBack);
+        mapGridContainer.RegisterCallback<MouseMoveEvent>(MapMouseGridCallBack);
+        mapGridContainer.RegisterCallback<MouseDownEvent>(SetPaintFlagTrue);
+        mapGridContainer.RegisterCallback<MouseUpEvent>(SetPaintFlagFalse);
+        mapGridContainer.RegisterCallback<MouseLeaveEvent>(SetPaintFlagFalse);
         mapGridContainer.onGUIHandler = drawGrid;
 
         paletteGridContainer.RegisterCallback<MouseDownEvent>(PaletteMouseGridCallBack);
@@ -144,42 +145,37 @@ public class LevelEditor
         textureField.RegisterCallback<ChangeEvent<Object>>(TextureFieldCallBack);
 
         saveButton.RegisterCallback<MouseUpEvent>(SaveButtonCallBack);
+        
     }
 
-    void MapMouseGridCallBack(MouseDownEvent evt)
+    void SetPaintFlagTrue(MouseDownEvent evt)
     {
-
-        int rCell = (int)evt.localMousePosition.y / cellSize;
-        int cCell = (int)evt.localMousePosition.x / cellSize;
-
-        if (rCell < rowCount && cCell < columnCount && selection != null)
+        paintFlag = true;
+        if (paintFlag)
         {
-            //Draw on selected layer
-            switch (currentLayer)
-            {
-                case 1:
-                    cells1[rCell][cCell] = selection;
-                    cells1[rCell][cCell].transform = new Vector2(cCell * selection.sprite.textureRect.width, rCell * selection.sprite.textureRect.height);
-                    break;
-
-                case 2:
-                    cells2[rCell][cCell] = selection;
-                    cells2[rCell][cCell].transform = new Vector2(cCell * selection.sprite.textureRect.width, rCell * selection.sprite.textureRect.height);
-                    break;
-
-                case 3:
-                    cells3[rCell][cCell] = selection;
-                    cells3[rCell][cCell].transform = new Vector2(cCell * selection.sprite.textureRect.width, rCell * selection.sprite.textureRect.height);
-                    break;
-
-                case 4:
-                    cells4[rCell][cCell] = selection;
-                    cells4[rCell][cCell].transform = new Vector2(cCell * selection.sprite.textureRect.width, rCell * selection.sprite.textureRect.height);
-                    break;
-            }
+            int rCell = (int)evt.localMousePosition.y / cellSize;
+            int cCell = (int)evt.localMousePosition.x / cellSize;
+            Paint(rCell, cCell);
+            MainEditor.getWindow().Repaint();
         }
-
-        MainEditor.getWindow().Repaint();
+    }
+    void SetPaintFlagFalse(MouseUpEvent evt)
+    {
+        paintFlag = false;
+    }
+    void SetPaintFlagFalse(MouseLeaveEvent evt)
+    {
+        paintFlag = false;
+    }
+    void MapMouseGridCallBack(MouseMoveEvent evt)
+    {
+        if (paintFlag)
+        {
+            int rCell = (int)evt.localMousePosition.y / cellSize;
+            int cCell = (int)evt.localMousePosition.x / cellSize;
+            Paint(rCell, cCell);
+            MainEditor.getWindow().Repaint();
+        }
     }
 
     void PaletteMouseGridCallBack(MouseDownEvent evt)
@@ -242,14 +238,15 @@ public class LevelEditor
 
     void DrawLevel()
     {
+
         for (int r = 0; r < rowCount; r++)
         {
             for (int c = 0; c < columnCount; c++)
             {
-                DrawTile(cells1, r, c);
-                DrawTile(cells2, r, c);
-                DrawTile(cells3, r, c);
-                DrawTile(cells4, r, c);
+                for (int i = 0; i < layers.Length; i++)
+                {
+                    DrawTile(mapLayers[i], r, c);
+                }
             }
         }
     }
@@ -280,6 +277,7 @@ public class LevelEditor
             Tile tile = ScriptableObject.CreateInstance<Tile>();
             tile.sprite = s;
             tile.rect = s.textureRect;
+            EditorUtility.SetDirty(tile);
             AssetDatabase.CreateAsset(tile, "Assets/Resources/Tiles/" + s.name + ".asset");
             AssetDatabase.SaveAssets();
         }
@@ -295,17 +293,68 @@ public class LevelEditor
         }
         else
         {
+            
             Map map = ScriptableObject.CreateInstance<Map>();
             map.name = mapNameField.text;
             map.texture = texture;
-            map.environment = cells1;
-            map.props = cells2;
-            map.enemies = cells3;
-            map.player = cells4;
+            TileList mapTiles = new TileList();
+            for (int i = 0; i < layers.Length; i++)
+            {
+                for (int r = 0; r < rowCount; r++)
+                {
+                    for (int c = 0; c < columnCount; c++)
+                    {
+                        if(mapLayers[i][r][c].sprite != null)
+                        {
+                            mapLayers[i][r][c].layer = i;
+                            mapTiles.Add(mapLayers[i][r][c]);
+                        }
+                    }
+                }
+            }
+            map.tiles = mapTiles;
 
+            EditorUtility.SetDirty(map);
             AssetDatabase.CreateAsset(map, "Assets/Resources/Maps/" + map.name + ".asset");
             AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
+
+    void Paint(int rCell, int cCell)
+    {
+        if (rCell < rowCount && cCell < columnCount && selection != null)
+        {
+            Vector2 position = new Vector2(cCell * 64, rCell * 64);
+            //Draw on selected layer
+            switch (currentLayer)
+            {
+                case 1:
+                    mapLayers[0][rCell][cCell].sprite = selection.sprite;
+                    mapLayers[0][rCell][cCell].rect = selection.sprite.rect;
+                    mapLayers[0][rCell][cCell].position = position;
+                    break;
+
+                case 2:
+                    mapLayers[1][rCell][cCell].sprite = selection.sprite;
+                    mapLayers[1][rCell][cCell].rect = selection.sprite.rect;
+                    mapLayers[1][rCell][cCell].position = position;
+                    break;
+
+                case 3:
+                    mapLayers[2][rCell][cCell].sprite = selection.sprite;
+                    mapLayers[2][rCell][cCell].rect = selection.sprite.rect;
+                    mapLayers[2][rCell][cCell].position = position;
+                    break;
+
+                case 4:
+                    mapLayers[3][rCell][cCell].sprite = selection.sprite;
+                    mapLayers[3][rCell][cCell].rect = selection.sprite.rect;
+                    mapLayers[3][rCell][cCell].position = position;
+                    break;
+            }
+        }
+    }
+
 }
 

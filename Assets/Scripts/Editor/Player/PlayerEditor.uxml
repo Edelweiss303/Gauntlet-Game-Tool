@@ -11,36 +11,19 @@
   "
   >
 
-  <uie:ObjectField label="Player" name="playerObjectField"/>
-  <TextField label="Player Name:" text="" binding-path="Name" name="playerNameLabel"/>
-  <TextField label="Player Damage:" text="" binding-path="Damage" name="playerDamageLabel"/>
-  <TextField label="Player Range:" text="" binding-path="Range" name="playerRangeLabel"/>
-
+  <uie:ObjectField label="Player Sprite" name="playerSpriteField"/>
+  <TextField label="Player Name:" text="" binding-path="MoveSpeed" name="playerNameField"/>
+  <TextField label="Player Move Speed:" text="" binding-path="MoveSpeed" name="playerSpeedField"/>
+  <uie:ObjectField label="Player Weapon:" binding-path="Weapon" name="playerWeaponField"/>
+  <uie:ObjectField label="Player Rigidbody:" binding-path="RigidBody" name="playerRigidBodyField"/>
+  
+  <IMGUIContainer class="sprite-display" name ="spriteDisplay" />
+  
   <VisualElement class="menu-row">
 
     <VisualElement class="menu-column">
       <Button name="colliderButton" text="Add Collider" class="wide-button"/>
       <VisualElement class="button-row">
-        <VisualElement class="button-column">
-          <Button name="tile0" class="tile-button"/>
-          <Button name="tile1" class="tile-button"/>
-          <Button name="tile2" class="tile-button"/>
-          <Button name="tile3" class="tile-button"/>
-        </VisualElement>
-
-        <VisualElement class="button-column">
-          <Button name="tile4" class="tile-button"/>
-          <Button name="tile5" class="tile-button"/>
-          <Button name="tile6" class="tile-button"/>
-          <Button name="tile7" class="tile-button"/>
-        </VisualElement>
-
-        <VisualElement class="button-column">
-          <Button name="tile8" class="tile-button"/>
-          <Button name="tile9" class="tile-button"/>
-          <Button name="tile10" class="tile-button"/>
-          <Button name="tile11" class="tile-button"/>
-        </VisualElement>
       </VisualElement>
     </VisualElement>
 

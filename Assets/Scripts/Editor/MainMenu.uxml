@@ -13,7 +13,7 @@
       <Button name="levelButton" text="Level" class="main-menu-button-on"/>
       <Button name="playerButton" text="Player" class="main-menu-button-off"/>
       <Button name="enemyButton" text="Enemy" class="main-menu-button-off"/>
-      <Button name="tileButton" text="Tile" class="main-menu-button-off"/>
+      <Button name="weaponButton" text="Weapon" class="main-menu-button-off"/>
       <Button name="assetButton" text="Asset" class="main-menu-button-off"/>
   </VisualElement>
 </UXML>

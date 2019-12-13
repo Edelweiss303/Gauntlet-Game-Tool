@@ -67,14 +67,14 @@
     <Compile Include="Assets\Scripts\Editor\Level\LevelEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\MainEditor.cs" />
     <Compile Include="Assets\Scripts\Editor\Player\PlayerEditor.cs" />
-    <Compile Include="Assets\Scripts\Editor\Tile\TileEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Weapon\WeaponEditor.cs" />
     <None Include="Assets\Scripts\Editor\Level\LevelEditor.uxml" />
     <None Include="Assets\Scripts\Editor\Level\LevelEditor.uss" />
     <None Include="Assets\Scripts\Editor\MainMenu.uxml" />
     <None Include="Assets\Scripts\Editor\Assets\AssetEditor.uss" />
-    <None Include="Assets\Scripts\Editor\Tile\TileEditor.uxml" />
+    <None Include="Assets\Scripts\Editor\Weapon\WeaponEditor.uxml" />
     <None Include="Assets\Scripts\Editor\Player\PlayerEditor.uss" />
-    <None Include="Assets\Scripts\Editor\Tile\TileEditor.uss" />
+    <None Include="Assets\Scripts\Editor\Weapon\WeaponEditor.uss" />
     <None Include="Assets\Scripts\Editor\Player\PlayerEditor.uxml" />
     <None Include="Assets\Scripts\Editor\Assets\AssetEditor.uxml" />
     <None Include="Assets\Scripts\Editor\Enemy\EnemyEditor.uxml" />
@@ -664,6 +664,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{8FA61DFE-35A6-0D3C-3407-D7BF82225B6A}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{8E4E4071-7880-3D1A-1DF7-2CE6CFB6A6F3}</Project>
       <Name>Assembly-CSharp</Name>
