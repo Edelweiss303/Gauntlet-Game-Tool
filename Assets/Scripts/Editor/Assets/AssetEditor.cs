@@ -239,11 +239,18 @@ public class AssetEditor
         playerComponent.Add("moveSpeed", System.Convert.ToSingle(player.moveSpeed));
         #endregion
 
+        #region create camera component
+        JSONObject camera = new JSONObject();
+        camera.Add("class", "Camera");
+        #endregion
+
+
         components.Add(transform);
         components.Add(sprite);
         components.Add(rigidbody);
         components.Add(circleCollider);
         components.Add(playerComponent);
+        components.Add(camera);
 
         playerNode.Add("Components", components);
         gameObjects.Add(playerNode);

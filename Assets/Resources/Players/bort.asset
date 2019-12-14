@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cc9f740af492e94baa1111f9bc53955, type: 3}
   m_Name: bort
   m_EditorClassIdentifier: 
-  sprite: {fileID: 4753217005504891328, guid: f4fe2deb3c73c534b892446ba37c7047, type: 3}
+  sprite: {fileID: 6284571250894512191, guid: f4fe2deb3c73c534b892446ba37c7047, type: 3}
   moveSpeed: 250
   position: {x: 100, y: 100}
   scale: {x: 1, y: 1}
@@ -21,7 +21,7 @@ MonoBehaviour:
   layer: 3
   weapon: {fileID: 0}
   bodyType: 1
-  radius: 32
+  radius: 16
   trigger: 0
   fixtureDensity: 0
   fixtureFriction: 0
