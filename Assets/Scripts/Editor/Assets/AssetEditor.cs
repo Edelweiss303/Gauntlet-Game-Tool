@@ -66,6 +66,8 @@ public class AssetEditor
         JSONArray resources = new JSONArray(); //List of .meta files
         resources.Add("../Assets/Images/Dungeon.png.meta");
         resources.Add("../Assets/Images/Witch.png.meta");
+        resources.Add("../Assets/Images/Explosion.png.meta");
+        resources.Add("../Assets/Prefabs/projectile.json.meta");
 
         JSONArray gameObjects = new JSONArray(); // GameObjects in level
         for (int i = 0; i < map.tiles.Count; i++)
@@ -84,34 +86,41 @@ public class AssetEditor
             JSONObject position = new JSONObject();
             JSONObject scale = new JSONObject();
 
-            position.Add("X", tile.position.x * 1.0f); //have to convert to floats
-            position.Add("Y", tile.position.y * 1.0f);
-
+            position.Add("X", tile.position.x); //have to convert to floats
+            position.Add("Y", tile.position.y);
+            Debug.Log(tile.position);
             scale.Add("X", tile.scale.x * 1.0f);
             scale.Add("Y", tile.scale.y * 1.0f);
 
             transform.Add("class", "Transform");
             transform.Add("Position", position);
             transform.Add("Scale", scale);
+
+            components.Add(transform);
             #endregion
 
             #region create sprite component
-            JSONObject sprite = new JSONObject();
-            JSONObject texture = new JSONObject();
-            JSONObject dimensions = new JSONObject();
+            if (tile.sprite != null)
+            {
+                JSONObject sprite = new JSONObject();
+                JSONObject texture = new JSONObject();
+                JSONObject dimensions = new JSONObject();
 
-            texture.Add("textureAssetGUID", "5651edc5-61a2-4e2d-8c52-fb04ca66564d");
+                texture.Add("textureAssetGUID", "5651edc5-61a2-4e2d-8c52-fb04ca66564d");
 
-            dimensions.Add("Left", tile.sprite.rect.x );
-            dimensions.Add("Top", (640 - tile.sprite.rect.y) - 64);
-            dimensions.Add("Width", 64);
-            dimensions.Add("Height", 64);
+                dimensions.Add("Left", tile.sprite.rect.x);
+                dimensions.Add("Top", (640 - tile.sprite.rect.y) - 64);
+                dimensions.Add("Width", 64);
+                dimensions.Add("Height", 64);
 
-            sprite.Add("class", "Sprite");
-            sprite.Add("enabled", true);
-            sprite.Add("Texture", texture);
-            sprite.Add("Dimensions", dimensions);
-            sprite.Add("Layer", tile.layer);
+                sprite.Add("class", "Sprite");
+                sprite.Add("enabled", true);
+                sprite.Add("Texture", texture);
+                sprite.Add("Dimensions", dimensions);
+                sprite.Add("Layer", tile.layer);
+
+                components.Add(sprite);
+            }
             #endregion
 
             #region create collider component
@@ -141,8 +150,6 @@ public class AssetEditor
 
             #endregion
             //Add components to components array
-            components.Add(transform);
-            components.Add(sprite);
             //Add components array to gameObject
             gameObject.Add("Components", components);
 
@@ -174,7 +181,6 @@ public class AssetEditor
         JSONObject playerJSON = new JSONObject();
 
         JSONArray resources = new JSONArray(); //List of .meta files
-        resources.Add("../Assets/Images/Dungeon.png.meta");
         resources.Add("../Assets/Images/Witch.png.meta");
 
         JSONArray gameObjects = new JSONArray();

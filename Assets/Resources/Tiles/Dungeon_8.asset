@@ -24,3 +24,7 @@ MonoBehaviour:
   enabled: 1
   destroyOnUnload: 1
   layer: 0
+  isTrigger: 0
+  radius: 0
+  boxHeight: 0
+  boxWidth: 0

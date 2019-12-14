@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tile-00", menuName = "My Assets/Tile")]
+[System.Serializable]
 public class Tile : ScriptableObject
 {
     public Sprite sprite;

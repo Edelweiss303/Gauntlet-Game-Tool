@@ -20,8 +20,8 @@ MonoBehaviour:
   destroyOnUnload: 1
   layer: 3
   weapon: {fileID: 0}
-  bodyType: 1
-  radius: 16
+  bodyType: 2
+  radius: 20
   trigger: 0
   fixtureDensity: 0
   fixtureFriction: 0
