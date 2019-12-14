@@ -5,7 +5,6 @@ using UnityEditor.UIElements;
 using System.IO; 
 using SimpleJSON;
 
-
 public class AssetEditor
 {
     public IBinding binding { get; set; }
@@ -112,13 +111,38 @@ public class AssetEditor
             sprite.Add("enabled", true);
             sprite.Add("Texture", texture);
             sprite.Add("Dimensions", dimensions);
-            sprite.Add("layer", tile.layer);
+            sprite.Add("Layer", tile.layer);
             #endregion
 
+            #region create collider component
+
+            if (map.tiles[i].radius != 0)
+            {
+                JSONObject collider = new JSONObject();
+                collider.Add("class", "CircleCollider");
+                collider.Add("enabled", true);
+                collider.Add("radius", map.tiles[i].radius);
+                collider.Add("trigger", map.tiles[i].isTrigger);
+                components.Add(collider);
+            }
+            else if(map.tiles[i].boxHeight != 0)
+            {
+                JSONObject collider = new JSONObject();
+                JSONObject box = new JSONObject();
+                box.Add("height", map.tiles[i].boxHeight);
+                box.Add("width", map.tiles[i].boxWidth);
+
+                collider.Add("class", "PolygonCollider");
+                collider.Add("enabled", true);
+                collider.Add("box", box);
+                collider.Add("trigger", map.tiles[i].isTrigger);
+                components.Add(collider);
+            }
+
+            #endregion
             //Add components to components array
             components.Add(transform);
             components.Add(sprite);
-
             //Add components array to gameObject
             gameObject.Add("Components", components);
 
@@ -166,12 +190,11 @@ public class AssetEditor
         JSONObject position = new JSONObject();
         JSONObject scale = new JSONObject();
 
-        position.Add("X", player.position.x * 1.0f); //have to convert to floats
-        position.Add("Y", player.position.y * 1.0f);
+        position.Add("X", player.position.x); //have to convert to floats
+        position.Add("Y", player.position.y);
 
-        scale.Add("X", player.scale.x * 1.0f);
-        scale.Add("Y", player.scale.y * 1.0f);
-
+        scale.Add("X", (float)(player.scale.x * 1.0f));
+        scale.Add("Y", (float)(player.scale.y * 1.0f));
         transform.Add("class", "Transform");
         transform.Add("Position", position);
         transform.Add("Scale", scale);
@@ -193,7 +216,7 @@ public class AssetEditor
         sprite.Add("enabled", true);
         sprite.Add("Texture", texture);
         sprite.Add("Dimensions", dimensions);
-        sprite.Add("layer", player.layer);
+        sprite.Add("Layer", player.layer);
         #endregion
 
         #region create rigidbody component
@@ -202,15 +225,24 @@ public class AssetEditor
         rigidbody.Add("BodyType", player.bodyType);
         #endregion
 
+        #region create collider component 
+        JSONObject circleCollider = new JSONObject();
+        circleCollider.Add("class", "CircleCollider");
+        circleCollider.Add("enabled", true);
+        circleCollider.Add("radius", (float)(player.radius * 1.0f));
+        circleCollider.Add("trigger", player.trigger);
+        #endregion
+
         #region create player component
         JSONObject playerComponent = new JSONObject();
         playerComponent.Add("class", "Player");
-        playerComponent.Add("moveSpeed", player.moveSpeed);
+        playerComponent.Add("moveSpeed", System.Convert.ToSingle(player.moveSpeed));
         #endregion
 
         components.Add(transform);
         components.Add(sprite);
         components.Add(rigidbody);
+        components.Add(circleCollider);
         components.Add(playerComponent);
 
         playerNode.Add("Components", components);

@@ -42,6 +42,10 @@ public class LevelEditor
     int selectionColumn;
     Color selectionColor = new Color(0.5f, 0.9f, 0.5f, 0.25f);
     Tile selection;
+    bool eraser = false;
+    bool circleCollider = false;
+    bool squareCollider = false;
+    Texture2D colliderTexture;
 
     Object[] loadedAssets;
     int tileColumn;
@@ -78,6 +82,9 @@ public class LevelEditor
 
     public void OnOpen(VisualElement root)
     {
+        //load sprite sheet for colliders
+        colliderTexture = Resources.Load<Texture2D>("colliders");
+
         var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Scripts/Editor/Level/LevelEditor.uss");
         root.styleSheets.Add(styleSheet);
 
@@ -91,6 +98,9 @@ public class LevelEditor
         var textureField = levelRootElement.Q<ObjectField>("textureField");
         textureField.objectType = typeof(Texture2D);
 
+        var circleColliderButton = levelRootElement.Q<Button>("circleColliderButton");
+        var squareColliderButton = levelRootElement.Q<Button>("squareColliderButton");
+        var eraserButton = levelRootElement.Q<Button>("eraserButton");
         var saveButton = levelRootElement.Q<Button>("saveButton");
 
         layerList = levelRootElement.Q<ListView>("layerList");
@@ -144,6 +154,9 @@ public class LevelEditor
 
         textureField.RegisterCallback<ChangeEvent<Object>>(TextureFieldCallBack);
 
+        circleColliderButton.RegisterCallback<MouseUpEvent>(circleColliderCallBack);
+        squareColliderButton.RegisterCallback<MouseUpEvent>(squareColliderCallBack);
+        eraserButton.RegisterCallback<MouseUpEvent>(eraserCallBack);
         saveButton.RegisterCallback<MouseUpEvent>(SaveButtonCallBack);
         
     }
@@ -155,7 +168,22 @@ public class LevelEditor
         {
             int rCell = (int)evt.localMousePosition.y / cellSize;
             int cCell = (int)evt.localMousePosition.x / cellSize;
-            Paint(rCell, cCell);
+            if (eraser) //erase if the eraser is selected
+            {
+                Erase(rCell, cCell);
+            }
+            else if (circleCollider)
+            {
+                CreateCircleCollider(rCell, cCell);
+            }
+            else if (squareCollider)
+            {
+                CreateSquareCollider(rCell, cCell);
+            }
+            else
+            {
+                Paint(rCell, cCell);
+            }
             MainEditor.getWindow().Repaint();
         }
     }
@@ -173,13 +201,41 @@ public class LevelEditor
         {
             int rCell = (int)evt.localMousePosition.y / cellSize;
             int cCell = (int)evt.localMousePosition.x / cellSize;
-            Paint(rCell, cCell);
+
+            if (eraser) //erase if the eraser is selected
+            {
+                Erase(rCell, cCell);
+            }
+            else if (circleCollider)
+            {
+                CreateCircleCollider(rCell, cCell);
+            }
+            else if (squareCollider)
+            {
+                CreateSquareCollider(rCell, cCell);
+            }
+            else
+            {
+                Paint(rCell, cCell);
+            }
             MainEditor.getWindow().Repaint();
         }
-    }
 
+    }
     void PaletteMouseGridCallBack(MouseDownEvent evt)
-    {
+    {  
+        //unselect the other buttons
+        eraser = false;
+        circleCollider = false;
+        squareCollider = false;
+        //Clear the other button backgrounds
+        var eraserButton = levelRootElement.Q<Button>("eraserButton");
+        eraserButton.style.backgroundColor = Color.clear;
+        var squareColliderButton = levelRootElement.Q<Button>("squareColliderButton");
+        squareColliderButton.style.backgroundColor = Color.clear;
+        var circleColliderButton = levelRootElement.Q<Button>("circleColliderButton");
+        circleColliderButton.style.backgroundColor = Color.clear;
+
         int rCell = (int)evt.localMousePosition.y / paletteCellSize;
         int cCell = (int)evt.localMousePosition.x / paletteCellSize;
 
@@ -192,7 +248,6 @@ public class LevelEditor
             MainEditor.getWindow().Repaint();
         }
     }
-
     void SelectLayer()
     {
         currentLayer = layerList.selectedIndex + 1;
@@ -208,7 +263,6 @@ public class LevelEditor
             tiles[xPos][yPos] = tile;
         }
     }
-
     void DrawPalette()
     {
         for (int r = 0; r < palette.Count; r++)
@@ -235,10 +289,8 @@ public class LevelEditor
             }
         }
     }
-
     void DrawLevel()
     {
-
         for (int r = 0; r < rowCount; r++)
         {
             for (int c = 0; c < columnCount; c++)
@@ -250,7 +302,6 @@ public class LevelEditor
             }
         }
     }
-
     void DrawTile(List<List<Tile>> cells, int r, int c)
     {
         if (cells[r][c].sprite != null)
@@ -258,15 +309,39 @@ public class LevelEditor
             Rect textureRect = cells[r][c].rect;
             Rect destRect = new Rect(c * cellSize, r * cellSize, cellSize, cellSize);
 
+            //dividing rect by 1/640;
             textureRect.x *= 0.0015625f;
             textureRect.y *= 0.0015625f;
             textureRect.width *= 0.0015625f;
             textureRect.height *= 0.0015625f;
 
             GUI.DrawTextureWithTexCoords(destRect, cells[r][c].sprite.texture, textureRect);
+
+            //draw the colliders if there is one
+            if (cells[r][c].radius != 0)
+            {
+                if (cells[r][c].isTrigger)
+                {
+                    GUI.DrawTextureWithTexCoords(destRect, colliderTexture, new Rect(0.5f, 0.0f, 0.5f, 0.5f));
+                }
+                else
+                {
+                    GUI.DrawTextureWithTexCoords(destRect, colliderTexture, new Rect(0.0f, 0.0f, 0.5f, 0.5f));
+                } 
+            }
+            else if(cells[r][c].boxHeight != 0)
+            {
+                if (cells[r][c].isTrigger)
+                {
+                    GUI.DrawTextureWithTexCoords(destRect, colliderTexture, new Rect(0.5f, 0.5f, 0.5f, 0.5f));
+                }
+                else
+                {
+                    GUI.DrawTextureWithTexCoords(destRect, colliderTexture, new Rect(0.0f, 0.5f, 0.5f, 0.5f));
+                }
+            }
         }
     }
-
     void TextureFieldCallBack(ChangeEvent<Object> obj)
     {
         texture = obj.newValue as Texture2D;
@@ -282,7 +357,51 @@ public class LevelEditor
             AssetDatabase.SaveAssets();
         }
     }
+    void circleColliderCallBack(MouseUpEvent evt)
+    {
+        //clear other buttons/selections
+        palette[selectionRow][selectionColumn] = false;
+        squareCollider = false;
+        var eraserButton = levelRootElement.Q<Button>("eraserButton");
+        eraserButton.style.backgroundColor = Color.clear;
+        var squareColliderButton = levelRootElement.Q<Button>("squareColliderButton");
+        squareColliderButton.style.backgroundColor = Color.clear;
 
+        //Highlight the button so we know it's selected
+        var circleColliderButton = levelRootElement.Q<Button>("circleColliderButton");
+        circleColliderButton.style.backgroundColor = selectionColor;
+
+        circleCollider = true;
+    }
+    void squareColliderCallBack(MouseUpEvent evt)
+    {
+        //clear other buttons/selections
+        palette[selectionRow][selectionColumn] = false;
+        circleCollider = false;
+        var eraserButton = levelRootElement.Q<Button>("eraserButton");
+        eraserButton.style.backgroundColor = Color.clear;
+        var circleColliderButton = levelRootElement.Q<Button>("circleColliderButton");
+        circleColliderButton.style.backgroundColor = Color.clear;
+
+        //Highlight the button so we know it's selected
+        var squareColliderButton = levelRootElement.Q<Button>("squareColliderButton");
+        squareColliderButton.style.backgroundColor = selectionColor;
+
+        squareCollider = true;
+    }
+    void eraserCallBack(MouseUpEvent evt)
+    {
+        //clear other buttons/selections
+        palette[selectionRow][selectionColumn] = false;
+        var squareColliderButton = levelRootElement.Q<Button>("squareColliderButton");
+        squareColliderButton.style.backgroundColor = Color.clear;
+        var circleColliderButton = levelRootElement.Q<Button>("circleColliderButton");
+        circleColliderButton.style.backgroundColor = Color.clear;
+
+        var eraserButton = levelRootElement.Q<Button>("eraserButton");
+        eraserButton.style.backgroundColor = selectionColor;
+        eraser = true;
+    }
     void SaveButtonCallBack(MouseUpEvent evt)
     {
         var mapNameField = levelRootElement.Q<TextField>("mapNameField");
@@ -318,9 +437,9 @@ public class LevelEditor
             AssetDatabase.CreateAsset(map, "Assets/Resources/Maps/" + map.name + ".asset");
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            Debug.Log("Level Object exported successfully!");
         }
     }
-
     void Paint(int rCell, int cCell)
     {
         if (rCell < rowCount && cCell < columnCount && selection != null)
@@ -355,6 +474,105 @@ public class LevelEditor
             }
         }
     }
+    void Erase(int rCell, int cCell)
+    {
+        if (rCell < rowCount && cCell < columnCount && selection != null)
+        {
+            //replace painted tile with blank tile to erase
+            Tile tile = Tile.CreateInstance<Tile>();
+            switch (currentLayer)
+            {
+                case 1:
+                    mapLayers[0][rCell][cCell] = tile;
+                    break;                       
+                                                 
+                case 2:                          
+                    mapLayers[1][rCell][cCell] = tile;
+                    break;                       
+                                                 
+                case 3:                          
+                    mapLayers[2][rCell][cCell] = tile;
+                    break;                       
+                                                 
+                case 4:                          
+                    mapLayers[3][rCell][cCell] = tile;
+                    break;
+            }
+        }
+    }
+    void CreateSquareCollider(int rCell, int cCell)
+    {
+        if (rCell < rowCount && cCell < columnCount && selection != null)
+        {
+            var colliderTriggerToggle = levelRootElement.Q<Toggle>("colliderTriggerToggle");
+            switch (currentLayer)
+            {
+                case 1:
+                    mapLayers[0][rCell][cCell].radius = 0;
+                    mapLayers[0][rCell][cCell].boxHeight = 64;
+                    mapLayers[0][rCell][cCell].boxWidth = 64;
+                    mapLayers[0][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
 
+                case 2:
+                    mapLayers[1][rCell][cCell].radius = 0;
+                    mapLayers[1][rCell][cCell].boxHeight = 64;
+                    mapLayers[1][rCell][cCell].boxWidth = 64;
+                    mapLayers[1][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+
+                case 3:
+                    mapLayers[2][rCell][cCell].radius = 0;
+                    mapLayers[2][rCell][cCell].boxHeight = 64;
+                    mapLayers[2][rCell][cCell].boxWidth = 64;
+                    mapLayers[2][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+
+                case 4:
+                    mapLayers[3][rCell][cCell].radius = 0;
+                    mapLayers[3][rCell][cCell].boxHeight = 64;
+                    mapLayers[3][rCell][cCell].boxWidth = 64;
+                    mapLayers[3][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+            }
+        }
+    }
+    void CreateCircleCollider(int rCell, int cCell)
+    {
+        if (rCell < rowCount && cCell < columnCount && selection != null)
+        {
+            var colliderTriggerToggle = levelRootElement.Q<Toggle>("colliderTriggerToggle");
+            switch (currentLayer)
+            {
+                case 1:
+                    mapLayers[0][rCell][cCell].boxHeight = 0;
+                    mapLayers[0][rCell][cCell].boxWidth = 0;
+                    mapLayers[0][rCell][cCell].radius = 32;
+                    mapLayers[0][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+
+                case 2:
+                    mapLayers[1][rCell][cCell].boxHeight = 0;
+                    mapLayers[1][rCell][cCell].boxWidth = 0;
+                    mapLayers[1][rCell][cCell].radius = 32;
+                    mapLayers[1][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+
+                case 3:
+                    mapLayers[2][rCell][cCell].boxHeight = 0;
+                    mapLayers[2][rCell][cCell].boxWidth = 0;
+                    mapLayers[2][rCell][cCell].radius = 32;
+                    mapLayers[2][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+
+                case 4:
+                    mapLayers[3][rCell][cCell].boxHeight = 0;
+                    mapLayers[3][rCell][cCell].boxWidth = 0;
+                    mapLayers[3][rCell][cCell].radius = 32;
+                    mapLayers[3][rCell][cCell].isTrigger = colliderTriggerToggle.value;
+                    break;
+            }
+        }
+    }
 }
 

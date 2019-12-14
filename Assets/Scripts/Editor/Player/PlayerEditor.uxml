@@ -11,21 +11,20 @@
   "
   >
 
-  <uie:ObjectField label="Player Sprite" name="playerSpriteField"/>
-  <TextField label="Player Name:" text="" binding-path="MoveSpeed" name="playerNameField"/>
-  <TextField label="Player Move Speed:" text="" binding-path="MoveSpeed" name="playerSpeedField"/>
-  <uie:ObjectField label="Player Weapon:" binding-path="Weapon" name="playerWeaponField"/>
-  <TextField label="Player RigidBody:" binding-path="Rigidbody" name="playerRigidBodyField"/>
-  
-  <IMGUIContainer class="sprite-display" name ="spriteDisplay" />
-  
   <VisualElement class="menu-row">
-
+    
     <VisualElement class="menu-column">
-      <VisualElement class="button-row">
-        <Button name="circleColliderButton" text="Add Circle Collider" class="wide-button"/>
-        <Button name="polygonColliderButton" text="Add Polygon Collider" class="wide-button"/>
-      </VisualElement>
+      <IMGUIContainer class="sprite-display" name ="spriteDisplay" />
+    </VisualElement>
+    
+    <VisualElement class="menu-column">
+        <uie:ObjectField label="Player Sprite" name="playerSpriteField"/>
+        <TextField label="Player Name:" text="" binding-path="MoveSpeed" name="playerNameField"/>
+        <uie:IntegerField label="Player Move Speed:" text="" binding-path="MoveSpeed" name="playerSpeedField"/>
+        <uie:ObjectField label="Player Weapon:" binding-path="Weapon" name="playerWeaponField"/>
+        <uie:IntegerField label="Player RigidBody:" binding-path="Rigidbody" name="playerRigidBodyField"/>
+        <uie:IntegerField label="Collider Radius:" binding-path="Collider" name="playerRadiusField"/>
+        <Toggle label="Is Collider Trigger:" binding-path="isTrigger" name="playerTriggerToggle"/>
     </VisualElement>
   </VisualElement>
   

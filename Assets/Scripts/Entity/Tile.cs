@@ -13,6 +13,9 @@ public class Tile : ScriptableObject
     public bool destroyOnUnload = true;
     public int layer;
 
-    //CircleCollider circleCollider;
-    //PolygonCollider polygonCollider; 
+    public bool isTrigger;
+    public int radius = 0;
+    public int boxHeight = 0;
+    public int boxWidth = 0;
+
 }

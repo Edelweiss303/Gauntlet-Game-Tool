@@ -23,17 +23,21 @@
 
     <VisualElement class="menu-column">
       <IMGUIContainer name ="palletteGridContainer" class="map-grid"/>
+
+      <VisualElement class="button-row">
+        <Button name="eraserButton" text="Eraser" class="wide-button"/>
+        <Button name="circleColliderButton" text="Circle Collider" class="wide-button"/>
+        <Button name="squareColliderButton" text="Square Collider" class="wide-button"/>
+        <VisualElement class="button-column">
+          <TextElement text="Layers:"/>
+          <ListView label="Current Layer" name="layerList" class="layer-view"/>
+        </VisualElement>
+      </VisualElement>
+      <Toggle label="Is Collider Trigger:" binding-path="isTrigger" name="colliderTriggerToggle"/>
     </VisualElement>
     
   </VisualElement>
   <VisualElement class="button-row">
     <Button name="saveButton" text="Save" class="wide-button"/>
-    <Button name="colliderButton" text="Add Collider" class="wide-button"/>
-    
-    <VisualElement class="menu-column">
-      <TextElement text="Layers:"/>
-      <ListView label="Current Layer" name="layerList" class="layer-view"/>
-    </VisualElement>
-    
   </VisualElement>
 </UXML>

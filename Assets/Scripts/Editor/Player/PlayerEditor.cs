@@ -59,7 +59,6 @@ public class PlayerEditor
     private void SpriteFieldCallback(ChangeEvent<Object> evt)
     {
         selectedSprite = evt.newValue as Sprite;
-        Debug.Log(selectedSprite.rect);
     }
 
     private void WeaponFieldCallback(ChangeEvent<Object> evt)
@@ -69,15 +68,21 @@ public class PlayerEditor
 
     private void CreatePlayer(MouseUpEvent evt)
     {
-        var playerSpeedField = playerRootElement.Q<TextField>("playerSpeedField");
+        var playerSpeedField = playerRootElement.Q<IntegerField>("playerSpeedField");
         var playerNameField = playerRootElement.Q<TextField>("playerNameField");
-        var playerRigidBodyField = playerRootElement.Q<TextField>("playerRigidBodyField");
+        var playerRigidBodyField = playerRootElement.Q<IntegerField>("playerRigidBodyField");
+        var playerRadiusField = playerRootElement.Q<IntegerField>("playerRadiusField");
+        var playerTriggerToggle = playerRootElement.Q<Toggle>("playerTriggerToggle");
+
         Player player = ScriptableObject.CreateInstance<Player>();
         player.sprite = selectedSprite;
         player.name = playerNameField.text;
-        player.moveSpeed = float.Parse(playerSpeedField.text);
-        player.bodyType = int.Parse(playerRigidBodyField.text);
+        player.moveSpeed = playerSpeedField.value;
+        player.bodyType = playerRigidBodyField.value;
         player.layer = 3;
+
+        player.radius = playerRadiusField.value;
+        player.trigger = playerTriggerToggle.value;
 
         EditorUtility.SetDirty(player);
         AssetDatabase.CreateAsset(player, "Assets/Resources/Players/" + player.name + ".asset");

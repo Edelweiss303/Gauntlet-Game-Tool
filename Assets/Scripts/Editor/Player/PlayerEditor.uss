@@ -4,19 +4,12 @@
 }
 
 .menu-row {
-    flex-direction: row
+    flex-direction: row;
 }
 
 .menu-column {
     flex-direction: column;
-}
-
-.player-grid {
-    overflow: hidden;
-    flex-direction: row;
-    width: 513px;
-    height: 513px;
-    background-color: rgb(0, 0, 0);
+    flex-grow: 1.0;
 }
 
 .sprite-display {
