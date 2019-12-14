@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Weapon : ScriptableObject
 {
-    Sprite sprite;
-    int damage;
-    int player;
+    public Sprite sprite;
+    public int damage;
+    public int range;
+    public CircleCollider circleCollider;
+
 }

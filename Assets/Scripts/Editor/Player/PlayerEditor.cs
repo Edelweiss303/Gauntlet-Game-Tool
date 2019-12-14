@@ -13,7 +13,6 @@ public class PlayerEditor
 
     public Sprite selectedSprite;
     public Weapon selectedWeapon;
-    public RigidBody selectedRigidBody;
     Rect textureRect;
     int displayWidth = 128;
     int displayHeight = 128;
@@ -35,12 +34,11 @@ public class PlayerEditor
         playerWeaponField.objectType = typeof(Weapon);
         playerWeaponField.RegisterCallback<ChangeEvent<Object>>(WeaponFieldCallback);
 
-        var playerRigidBodyField = playerRootElement.Q<ObjectField>("playerRigidBodyField");
-        playerRigidBodyField.objectType = typeof(RigidBody);
-        playerRigidBodyField.RegisterCallback<ChangeEvent<Object>>(RigidBodyFieldCallback);
-
         var spriteDisplay = playerRootElement.Q<IMGUIContainer>("spriteDisplay");
         spriteDisplay.onGUIHandler = DrawSprite;
+
+        var saveButton = playerRootElement.Q<Button>("saveButton");
+        saveButton.RegisterCallback<MouseUpEvent>(CreatePlayer);
     }
 
     private void DrawSprite()
@@ -61,6 +59,7 @@ public class PlayerEditor
     private void SpriteFieldCallback(ChangeEvent<Object> evt)
     {
         selectedSprite = evt.newValue as Sprite;
+        Debug.Log(selectedSprite.rect);
     }
 
     private void WeaponFieldCallback(ChangeEvent<Object> evt)
@@ -68,21 +67,22 @@ public class PlayerEditor
         selectedWeapon = evt.newValue as Weapon;
     }
 
-    private void RigidBodyFieldCallback(ChangeEvent<Object> evt)
-    {
-        selectedRigidBody = evt.newValue as RigidBody;
-    }
-
     private void CreatePlayer(MouseUpEvent evt)
     {
         var playerSpeedField = playerRootElement.Q<TextField>("playerSpeedField");
         var playerNameField = playerRootElement.Q<TextField>("playerNameField");
+        var playerRigidBodyField = playerRootElement.Q<TextField>("playerRigidBodyField");
         Player player = ScriptableObject.CreateInstance<Player>();
         player.sprite = selectedSprite;
         player.name = playerNameField.text;
-        player.moveSpeed = int.Parse(playerSpeedField.text);
+        player.moveSpeed = float.Parse(playerSpeedField.text);
+        player.bodyType = int.Parse(playerRigidBodyField.text);
+        player.layer = 3;
 
+        EditorUtility.SetDirty(player);
         AssetDatabase.CreateAsset(player, "Assets/Resources/Players/" + player.name + ".asset");
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
 
     }
 }

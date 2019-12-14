@@ -5,16 +5,19 @@ using UnityEngine;
 public class Player : ScriptableObject
 {
     public Sprite sprite;
-    public int moveSpeed;
-    public Vector2 position;
-    public Vector2 scale = new Vector2(1.0f, 1.0f);
+    public float moveSpeed;
+    public Vector2 position = new Vector2(100.0f, 100.0f); //Default Transform
+    public Vector2 scale = new Vector2(1.0f, 1.0f); //Default scale
     public bool enabled = true;
     public bool destroyOnUnload = true;
-    public int layer;
-    public Weapon weapon;
-    public struct RigidBody {
 
-    };
-    CircleCollider circleCollider;
-    PolygonCollider polygonCollider; 
+    public int layer = 3; //Players are always drawn on layer 3
+
+    public Weapon weapon;
+
+    public int bodyType; //RigidBody currently only has one element 
+    //public RigidBody rigidBody;
+
+    public CircleCollider circleCollider;
+    public PolygonCollider polygonCollider; 
 }

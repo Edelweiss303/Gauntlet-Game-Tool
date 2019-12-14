@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cc9f740af492e94baa1111f9bc53955, type: 3}
+  m_Name: bort
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -2495499442074783959, guid: f4fe2deb3c73c534b892446ba37c7047, type: 3}
+  moveSpeed: 500
+  position: {x: 100, y: 100}
+  scale: {x: 1, y: 1}
+  enabled: 1
+  destroyOnUnload: 1
+  layer: 3
+  weapon: {fileID: 0}
+  bodyType: 1

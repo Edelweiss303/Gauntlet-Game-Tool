@@ -4,5 +4,11 @@ using UnityEngine;
 
 public class CircleCollider
 {
-    int Radius;
+    public bool enabled = true;
+    public int radius;
+    public bool trigger = false;
+
+    public int fixtureDensity = 0;
+    public int fixtureFriction = 0;
+    public int fixtureRestitution = 0;
 }

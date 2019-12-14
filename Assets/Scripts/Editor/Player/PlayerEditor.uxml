@@ -15,20 +15,20 @@
   <TextField label="Player Name:" text="" binding-path="MoveSpeed" name="playerNameField"/>
   <TextField label="Player Move Speed:" text="" binding-path="MoveSpeed" name="playerSpeedField"/>
   <uie:ObjectField label="Player Weapon:" binding-path="Weapon" name="playerWeaponField"/>
-  <uie:ObjectField label="Player Rigidbody:" binding-path="RigidBody" name="playerRigidBodyField"/>
+  <TextField label="Player RigidBody:" binding-path="Rigidbody" name="playerRigidBodyField"/>
   
   <IMGUIContainer class="sprite-display" name ="spriteDisplay" />
   
   <VisualElement class="menu-row">
 
     <VisualElement class="menu-column">
-      <Button name="colliderButton" text="Add Collider" class="wide-button"/>
       <VisualElement class="button-row">
+        <Button name="circleColliderButton" text="Add Circle Collider" class="wide-button"/>
+        <Button name="polygonColliderButton" text="Add Polygon Collider" class="wide-button"/>
       </VisualElement>
     </VisualElement>
-
   </VisualElement>
-  <ListView label="List of Enemies" name="playerListView"/>
+  
   <VisualElement class="button-row">
     <Button name="saveButton" text="Save" class="wide-button"/>
   </VisualElement>

@@ -50,6 +50,7 @@ public class AssetEditor
                 break;
 
             case "Player":
+                ExportPlayer(scObj);
                 break;
 
             case "Enemy":
@@ -143,4 +144,91 @@ public class AssetEditor
         }
     }
 
+    void ExportPlayer(ScriptableObject scObj)
+    {
+        Player player = scObj as Player;
+        JSONObject playerJSON = new JSONObject();
+
+        JSONArray resources = new JSONArray(); //List of .meta files
+        resources.Add("../Assets/Images/Dungeon.png.meta");
+        resources.Add("../Assets/Images/Witch.png.meta");
+
+        JSONArray gameObjects = new JSONArray();
+        JSONObject playerNode = new JSONObject();
+        playerNode.Add("name", "Player");
+        playerNode.Add("enabled", player.enabled);
+        playerNode.Add("destroyOnUnload", player.destroyOnUnload);
+
+        JSONArray components = new JSONArray();
+
+        #region create transform component
+        JSONObject transform = new JSONObject();
+        JSONObject position = new JSONObject();
+        JSONObject scale = new JSONObject();
+
+        position.Add("X", player.position.x * 1.0f); //have to convert to floats
+        position.Add("Y", player.position.y * 1.0f);
+
+        scale.Add("X", player.scale.x * 1.0f);
+        scale.Add("Y", player.scale.y * 1.0f);
+
+        transform.Add("class", "Transform");
+        transform.Add("Position", position);
+        transform.Add("Scale", scale);
+        #endregion
+
+        #region create sprite component
+        JSONObject sprite = new JSONObject();
+        JSONObject texture = new JSONObject();
+        JSONObject dimensions = new JSONObject();
+
+        texture.Add("textureAssetGUID", "04127430-547d-4db3-936b-666e63665eaa");
+
+        dimensions.Add("Left", player.sprite.rect.x);
+        dimensions.Add("Top", (player.sprite.texture.height - player.sprite.rect.y) - 64);
+        dimensions.Add("Width", 64);
+        dimensions.Add("Height", 64);
+
+        sprite.Add("class", "Sprite");
+        sprite.Add("enabled", true);
+        sprite.Add("Texture", texture);
+        sprite.Add("Dimensions", dimensions);
+        sprite.Add("layer", player.layer);
+        #endregion
+
+        #region create rigidbody component
+        JSONObject rigidbody = new JSONObject();
+        rigidbody.Add("class", "RigidBody");
+        rigidbody.Add("BodyType", player.bodyType);
+        #endregion
+
+        #region create player component
+        JSONObject playerComponent = new JSONObject();
+        playerComponent.Add("class", "Player");
+        playerComponent.Add("moveSpeed", player.moveSpeed);
+        #endregion
+
+        components.Add(transform);
+        components.Add(sprite);
+        components.Add(rigidbody);
+        components.Add(playerComponent);
+
+        playerNode.Add("Components", components);
+        gameObjects.Add(playerNode);
+
+        playerJSON.Add("resources", resources);
+        playerJSON.Add("GameObjects", gameObjects);
+
+        var fileNameField = assetRootElement.Q<TextField>("fileNameField");
+
+        if (fileNameField.text == "")
+        {
+            Debug.Log("Player must have a name!");
+        }
+        else
+        {
+            File.WriteAllText("Assets/Resources/JSON/" + fileNameField.text + ".json", playerJSON.ToString());
+            Debug.Log("Player successfully exported!");
+        }
+    }
 }
